@@ -7,6 +7,8 @@ This template does two things:
 1. Allow users to log in and store auth credentials locally
 2. Allow users to access protected resources with the local credentials
 
+This CLI is for example purposes – it's intended that you should customize it for your own product (`acme login` -> store key in `.acme`).
+
 # Login
 
 `unkey-cli login` does the following:
@@ -15,7 +17,6 @@ This template does two things:
 2. If this is sucessful, queries Unkey for a new API key
 3. Stores the key locally in `.unkey`
 
-This CLI is for example purposes – it's intended that you should customize it for your own product (`acme login` -> store key in `.acme`).
 
 # Access
 
