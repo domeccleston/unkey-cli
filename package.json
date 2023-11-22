@@ -19,5 +19,8 @@
     "ts-node": "^10.9.1",
     "tsup": "^7.3.0",
     "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "nanoid": "3"
   }
 }
