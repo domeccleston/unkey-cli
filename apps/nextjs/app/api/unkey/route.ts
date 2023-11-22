@@ -26,15 +26,5 @@ export async function POST(request: Request) {
     });
   }
 
-  try {
-    const localServerReq = await fetch(`${redirect}?code=${code}`, {
-      method: "POST",
-      body: JSON.stringify(result),
-      headers: { "Content-Type": "application/json" },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-
-  return NextResponse.json(result);
+  return NextResponse.json({ ...result, code, redirect });
 }

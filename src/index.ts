@@ -5,10 +5,12 @@ import http from "http";
 import { promises as fs } from "fs";
 import os from "os";
 import path from "path";
+import url from "url";
 import { listen } from "async-listen";
 
 const FILENAME = ".unkey";
-const CLIENT_URL = "https://unkey-cli.vercel.app/auth/devices";
+const CLIENT_URL = "http://localhost:3000";
+// const CLIENT_URL = "https://unkey-cli.vercel.app";
 
 async function writeToConfigFile(data: any) {
   try {
@@ -37,28 +39,28 @@ program
     const { port } = await listen(server, 0, "127.0.0.1");
     const authPromise = new Promise((resolve, reject) => {
       server.once("request", (req, res) => {
-        if (req.method === "POST") {
-          let body = "";
-          req.on("data", (chunk) => {
-            body += chunk.toString();
-          });
-          req.on("end", () => {
-            const data = JSON.parse(body);
-            console.log(body);
-            res.writeHead(200);
-            res.end();
-            resolve(data); // Resolve the promise with the received data
-          });
+        if (req.method === "GET") {
+          const parsedUrl = url.parse(req.url as string, true);
+          const queryParams = parsedUrl.query;
+          console.log(queryParams);
+
+          res.writeHead(302, { Location: CLIENT_URL + "/auth/success" });
+          res.end(JSON.stringify(queryParams));
+
+          resolve(queryParams);
         } else {
-          reject(new Error("Invalid request method"));
+          res.writeHead(405);
+          res.end();
         }
       });
     });
 
     const redirect = `http://127.0.0.1:${port}`;
 
+    console.log({ redirect });
+
     const code = nanoid();
-    const confirmationUrl = new URL(CLIENT_URL);
+    const confirmationUrl = new URL(CLIENT_URL + "/auth/devices");
     confirmationUrl.searchParams.append("code", code);
     confirmationUrl.searchParams.append("redirect", redirect);
     console.log(`Confirmation code: ${code}\n`);
