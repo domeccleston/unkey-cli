@@ -1,13 +1,6 @@
 # unkey-cli
 
-Template for building a command line interface with [Unkey](https://unkey.dev/).
-
-This template does two things:
-
-1. Allow users to log in and store auth credentials locally
-2. Allow users to access protected resources with the local credentials
-
-This CLI is for example purposes – it's intended that you should customize it for your own product (`acme login` -> store key in `.acme`).
+CLI login example built with [Unkey](https://unkey.dev/)
 
 # Login
 
@@ -16,10 +9,6 @@ This CLI is for example purposes – it's intended that you should customize it 
 1. Opens a new browser window for your user to log in with your service
 2. If this is sucessful, queries Unkey for a new API key
 3. Stores the key locally in `.unkey`
-
-# Access
-
-`unkey-cli access` checks the local auth credentials with Unkey: if the auth credentials fail, it will show an error message. If successful, the user can access your API.
 
 # Example use case
 

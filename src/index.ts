@@ -7,8 +7,8 @@ import os from "os";
 import path from "path";
 import { listen } from "async-listen";
 
-const CLIENT_URL = "http://localhost:3000/auth/devices";
-// const CLIENT_URL = "https://unkey-cli.vercel.app/auth/devices";
+const FILENAME = ".unkey";
+const CLIENT_URL = "https://unkey-cli.vercel.app/auth/devices";
 
 async function writeToConfigFile(data: any) {
   const filename = ".unkey";
@@ -80,41 +80,6 @@ program
     } finally {
       server.close();
     }
-
-    // console.log(`Confirmation code: ${id}`);
   });
 
 program.parse();
-
-// type AuthConfig = {
-//   token: string;
-// };
-
-// function openLoginPage(): AuthConfig {
-//   return { token: "123" };
-// }
-
-// async function writeCredentialsToFile() {}
-
-// async function getLocalCredentials(): Promise<AuthConfig> {
-//   return new Promise(() => {
-//     token: "123";
-//   });
-// }
-
-// async function login() {
-//   const { token } = await getLocalCredentials();
-
-//   if (token) {
-//     console.log("already logged in!");
-//   } else {
-//     try {
-//       const result = await openLoginPage();
-//       await writeCredentialsToFile();
-//       console.log("logged in!");
-//       return result;
-//     } catch (error) {
-//       throw new Error();
-//     }
-//   }
-// }
