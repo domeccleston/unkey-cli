@@ -17,7 +17,6 @@ This CLI is for example purposes – it's intended that you should customize it 
 2. If this is sucessful, queries Unkey for a new API key
 3. Stores the key locally in `.unkey`
 
-
 # Access
 
 `unkey-cli access` checks the local auth credentials with Unkey: if the auth credentials fail, it will show an error message. If successful, the user can access your API.
