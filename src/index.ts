@@ -9,8 +9,8 @@ import url from "url";
 import { listen } from "async-listen";
 
 const FILENAME = ".unkey";
-const CLIENT_URL = "http://localhost:3000";
-// const CLIENT_URL = "https://unkey-cli.vercel.app";
+// const CLIENT_URL = "http://localhost:3000";
+const CLIENT_URL = "https://unkey-cli.vercel.app";
 
 async function writeToConfigFile(data: any) {
   try {
