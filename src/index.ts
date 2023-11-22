@@ -11,14 +11,9 @@ const FILENAME = ".unkey";
 const CLIENT_URL = "https://unkey-cli.vercel.app/auth/devices";
 
 async function writeToConfigFile(data: any) {
-  const filename = ".unkey";
-  if (!filename) {
-    console.error("CONFIG_FILE_NAME must be provided in .env");
-    return 1;
-  }
   try {
     const homeDir = os.homedir();
-    const filePath = path.join(homeDir, filename);
+    const filePath = path.join(homeDir, FILENAME);
     await fs.writeFile(filePath, JSON.stringify(data));
     console.log(`Data written to ${filePath}`);
   } catch (error) {
