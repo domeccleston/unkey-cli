@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 
-export async function Page() {
+export default function Page() {
   const searchParams = useSearchParams();
 
   const code = searchParams.get("code");
