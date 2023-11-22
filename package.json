@@ -21,6 +21,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "nanoid": "3"
+    "nanoid": "3",
+    "open": "^9.1.0"
   }
 }

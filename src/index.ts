@@ -1,5 +1,8 @@
 import { Command } from "commander";
 import { customAlphabet } from "nanoid";
+import { spawn } from "child_process";
+
+const CLIENT_URL = "https://unkey-cli.vercel.app/auth/devices";
 
 const program = new Command();
 const nanoid = customAlphabet("123456789QAZWSXEDCRFVTGBYHNUJMIKOLP", 8);
@@ -13,8 +16,15 @@ program
   .command("login")
   .description("Authenticate with your service via the CLI")
   .action(() => {
-    const id = nanoid();
-    console.log(`Confirmation code: ${id}`);
+    const code = nanoid();
+    const confirmationUrl = `${CLIENT_URL}?code=${code}\n`;
+    console.log(`Confirmation code: ${code}\n`);
+    console.log(
+      `If something goes wrong, copy and paste this URL into your browser: ${confirmationUrl}`
+    );
+    spawn("open", [`https://unkey-cli.vercel.app/auth/devices?code=${code}`]);
+
+    // console.log(`Confirmation code: ${id}`);
   });
 
 program.parse();
