@@ -45,7 +45,7 @@ program
           const queryParams = parsedUrl.query;
 
           res.writeHead(200);
-          res.end();
+          res.end(JSON.stringify(queryParams));
 
           resolve(queryParams);
         } else {
