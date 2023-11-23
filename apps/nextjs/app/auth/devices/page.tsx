@@ -28,6 +28,7 @@ export default function Page() {
     redirect: string | null;
   }) {
     setLoading(true);
+    console.log("verifying");
     const req = await fetch("/api/unkey", {
       method: "POST",
       body: JSON.stringify(opts),
