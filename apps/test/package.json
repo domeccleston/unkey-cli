@@ -5,12 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "login": "npx unkey-cli login"
+    "login": "unkey-cli login"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "unkey-cli": "^1.1.0"
+    "unkey-cli": "^1.1.1"
   }
 }

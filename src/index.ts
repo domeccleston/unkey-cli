@@ -8,7 +8,6 @@ import path from "path";
 import url from "url";
 import { listen } from "async-listen";
 import pc from "picocolors";
-import ora from "ora";
 
 const FILENAME = ".unkey";
 const CLIENT_URL = "http://localhost:3000";
@@ -36,6 +35,8 @@ program
   .command("login")
   .description("Authenticate with your service via the CLI")
   .action(async () => {
+    const oraModule = await import("ora");
+    const ora = oraModule.default;
     const server = http.createServer();
     const { port } = await listen(server, 0, "127.0.0.1");
     const authPromise = new Promise((resolve, reject) => {
