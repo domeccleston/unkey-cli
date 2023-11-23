@@ -49,11 +49,9 @@ export default function Page() {
     redirectUrl.searchParams.append("code", res.code);
     redirectUrl.searchParams.append("key", res.key);
 
-    const localServerReq = await fetch("/api/localhost", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url: _redirect }),
-    });
+    console.log({ redirectUrl });
+
+    const localServerReq = await fetch(redirectUrl.toString());
 
     console.log(await localServerReq.json());
 
