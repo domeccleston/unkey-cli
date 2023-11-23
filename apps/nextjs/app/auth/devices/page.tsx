@@ -44,13 +44,13 @@ export default function Page() {
     redirectUrl.searchParams.append("code", res.code);
     redirectUrl.searchParams.append("key", res.key);
 
-    console.log(redirectUrl);
+    console.log({ redirectUrl });
 
     const localServerReq = await fetch(redirectUrl.toString(), {
       mode: "no-cors",
     });
 
-    console.log(localServerReq);
+    console.log({ localServerReq });
 
     console.log(await localServerReq.text());
 
