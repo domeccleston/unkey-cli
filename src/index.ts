@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Command } from "commander";
 import { customAlphabet } from "nanoid";
 import { spawn } from "child_process";
@@ -10,8 +12,8 @@ import { listen } from "async-listen";
 import pc from "picocolors";
 
 const FILENAME = ".unkey";
-const CLIENT_URL = "http://localhost:3000";
-// const CLIENT_URL = "https://unkey-cli.vercel.app";
+// const CLIENT_URL = "http://localhost:3000";
+const CLIENT_URL = "https://unkey-cli.vercel.app";
 
 async function writeToConfigFile(data: any) {
   try {
