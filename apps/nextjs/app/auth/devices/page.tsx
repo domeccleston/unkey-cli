@@ -38,13 +38,21 @@ export default function Page() {
 
     const res = await req.json();
 
+    console.log({ res });
+
     const redirectUrl = new URL(res.redirect);
     redirectUrl.searchParams.append("code", res.code);
     redirectUrl.searchParams.append("key", res.key);
 
+    console.log(redirectUrl);
+
     const localServerReq = await fetch(redirectUrl.toString(), {
       mode: "no-cors",
     });
+
+    console.log(localServerReq);
+
+    console.log(await localServerReq.text());
 
     setLoading(false);
     setSuccess(true);
@@ -99,13 +107,6 @@ export default function Page() {
           </div>
         </div>
       </div>
-      {/* <div>Code: {code}</div>
-      <p>Does this match what you see in your terminal?</p>
-      <button className="bg-gray-300" onClick={() => verify(opts)}>
-        Yes
-      </button>
-      <pre>{JSON.stringify(data)}</pre>
-      <pre>{success ? "Authentication successful." : ""}</pre> */}
       <Toaster />
     </div>
   );
