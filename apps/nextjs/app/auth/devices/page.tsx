@@ -31,11 +31,15 @@ export default function Page() {
     console.log("verifying");
     const req = await fetch("/api/unkey", {
       method: "POST",
-      body: JSON.stringify  (opts),
+      body: JSON.stringify(opts),
       headers: {
         "Content-Type": "application/json",
       },
     });
+
+    if (!req.ok) {
+      throw new Error(`HTTP error! status: ${req.status}`);
+    }
 
     const res = await req.json();
 
@@ -51,7 +55,9 @@ export default function Page() {
       mode: "no-cors",
     });
 
-    console.log({ localServerReq });
+    if (!localServerReq.ok) {
+      throw new Error(`HTTP error! status: ${req.status}`);
+    }
 
     console.log(await localServerReq.text());
 
