@@ -7,6 +7,8 @@ import os from "os";
 import path from "path";
 import url from "url";
 import { listen } from "async-listen";
+import pc from "picocolors";
+import ora from "ora";
 
 const FILENAME = ".unkey";
 // const CLIENT_URL = "http://localhost:3000";
@@ -17,7 +19,6 @@ async function writeToConfigFile(data: any) {
     const homeDir = os.homedir();
     const filePath = path.join(homeDir, FILENAME);
     await fs.writeFile(filePath, JSON.stringify(data));
-    console.log(`Data written to ${filePath}`);
   } catch (error) {
     console.error("Error writing to local config file", error);
   }
@@ -42,7 +43,6 @@ program
         if (req.method === "GET") {
           const parsedUrl = url.parse(req.url as string, true);
           const queryParams = parsedUrl.query;
-          console.log(queryParams);
 
           res.writeHead(302, { Location: CLIENT_URL + "/auth/success" });
           res.end(JSON.stringify(queryParams));
@@ -57,21 +57,24 @@ program
 
     const redirect = `http://127.0.0.1:${port}`;
 
-    console.log({ redirect });
-
     const code = nanoid();
     const confirmationUrl = new URL(CLIENT_URL + "/auth/devices");
     confirmationUrl.searchParams.append("code", code);
     confirmationUrl.searchParams.append("redirect", redirect);
-    console.log(`Confirmation code: ${code}\n`);
+    console.log(`Confirmation code: ${pc.bold(code)}\n`);
     console.log(
-      `If something goes wrong, copy and paste this URL into your browser: ${confirmationUrl.toString()}`
+      `If something goes wrong, copy and paste this URL into your browser: ${pc.bold(
+        confirmationUrl.toString()
+      )}\n`
     );
     spawn("open", [confirmationUrl.toString()]);
+    const spinner = ora("Waiting for authentication...").start();
+
     try {
       const authData = await authPromise;
+      spinner.stop();
       writeToConfigFile(authData);
-      console.log("Authentication successful:", authData);
+      console.log("Authentication successful.");
     } catch (error) {
       console.error("Authentication failed:", error);
     } finally {
