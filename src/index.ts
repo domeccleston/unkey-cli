@@ -47,6 +47,8 @@ program
           const parsedUrl = url.parse(req.url as string, true);
           const queryParams = parsedUrl.query;
 
+          res.setHeader("Access-Control-Allow-Origin", "*");
+
           res.writeHead(200);
           res.end(JSON.stringify(queryParams));
 
