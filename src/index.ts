@@ -58,7 +58,7 @@ program
       });
     });
 
-    const redirect = `http://127.0.0.1:${port}`;
+    const redirect = `http://localhost:${port}`;
 
     const code = nanoid();
     const confirmationUrl = new URL(CLIENT_URL + "/auth/devices");

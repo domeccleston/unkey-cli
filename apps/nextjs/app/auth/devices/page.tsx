@@ -31,7 +31,7 @@ export default function Page() {
     console.log("verifying");
     const req = await fetch("/api/unkey", {
       method: "POST",
-      body: JSON.stringify(opts),
+      body: JSON.stringify  (opts),
       headers: {
         "Content-Type": "application/json",
       },
