@@ -4,6 +4,8 @@ import { useUser } from "@clerk/nextjs";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { Fingerprint } from "lucide-react";
+
 export default function Page() {
   const [data, setData] = useState();
   const [success, setSuccess] = useState(false);
@@ -51,14 +53,23 @@ export default function Page() {
   const opts = { code, redirect: _redirect, id: user?.id };
 
   return (
-    <>
-      <div>Code: {code}</div>
+    <div className="bg-[#111] w-full min-h-screen text-gray-100 flex items-center pt-[200px] px-4 flex-col">
+      <div className="flex">
+        <div className="flex justify-center items-center pr-4">
+          <Fingerprint />
+        </div>
+        <div className="flex-col">
+          <h1 className="text-lg">Device confirmation</h1>
+          <p className="text-sm text-gray-500">Please confirm this is the code shown in your terminal</p>
+        </div>
+      </div>
+      {/* <div>Code: {code}</div>
       <p>Does this match what you see in your terminal?</p>
       <button className="bg-gray-300" onClick={() => verify(opts)}>
         Yes
       </button>
       <pre>{JSON.stringify(data)}</pre>
-      <pre>{success ? "Authentication successful." : ""}</pre>
-    </>
+      <pre>{success ? "Authentication successful." : ""}</pre> */}
+    </div>
   );
 }

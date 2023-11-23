@@ -45,7 +45,6 @@ program
           const queryParams = parsedUrl.query;
 
           res.writeHead(200);
-          // res.writeHead(302, { Location: CLIENT_URL + "/auth/success" });
           res.end();
 
           resolve(queryParams);
