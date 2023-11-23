@@ -49,17 +49,13 @@ export default function Page() {
     redirectUrl.searchParams.append("code", res.code);
     redirectUrl.searchParams.append("key", res.key);
 
-    console.log({ redirectUrl });
-
-    const localServerReq = await fetch(redirectUrl.toString(), {
-      mode: "no-cors",
+    const localServerReq = await fetch("/api/localhost", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url: _redirect }),
     });
 
-    if (!localServerReq.ok) {
-      throw new Error(`HTTP error! status: ${req.status}`);
-    }
-
-    console.log(await localServerReq.text());
+    console.log(await localServerReq.json());
 
     setLoading(false);
     setSuccess(true);
