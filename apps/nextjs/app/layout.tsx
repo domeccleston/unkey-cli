@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en" className="bg-[#111]">
+      <html lang="en" className="dark" suppressHydrationWarning>
         <body className={inter.className}>{children}</body>
       </html>
     </ClerkProvider>

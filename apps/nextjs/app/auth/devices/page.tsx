@@ -1,10 +1,12 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { Fingerprint } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { useUser } from "@clerk/nextjs";
 
 export default function Page() {
   const [data, setData] = useState();
@@ -53,14 +55,25 @@ export default function Page() {
   const opts = { code, redirect: _redirect, id: user?.id };
 
   return (
-    <div className="bg-[#111] w-full min-h-screen text-gray-100 flex items-center pt-[200px] px-4 flex-col">
+    <div className="w-full min-h-screen  flex items-center pt-[200px] px-4 flex-col">
       <div className="flex">
         <div className="flex justify-center items-center pr-4">
-          <Fingerprint />
+          <Fingerprint className="text-gray-100" />
         </div>
         <div className="flex-col">
-          <h1 className="text-lg">Device confirmation</h1>
-          <p className="text-sm text-gray-500">Please confirm this is the code shown in your terminal</p>
+          <h1 className="text-lg text-gray-100">Device confirmation</h1>
+          <p className="text-sm text-gray-500">
+            Please confirm this is the code shown in your terminal
+          </p>
+        </div>
+      </div>
+      <div>
+        <div></div>
+        <div className="flex justify-center pt-4">
+          <div className="flex items-center">
+            <Button variant="default" className="mr-2">Confirm code</Button>
+            <Button variant="outline">Cancel</Button>
+          </div>
         </div>
       </div>
       {/* <div>Code: {code}</div>
