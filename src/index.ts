@@ -11,8 +11,8 @@ import pc from "picocolors";
 import ora from "ora";
 
 const FILENAME = ".unkey";
-// const CLIENT_URL = "http://localhost:3000";
-const CLIENT_URL = "https://unkey-cli.vercel.app";
+const CLIENT_URL = "http://localhost:3000";
+// const CLIENT_URL = "https://unkey-cli.vercel.app";
 
 async function writeToConfigFile(data: any) {
   try {
@@ -44,8 +44,9 @@ program
           const parsedUrl = url.parse(req.url as string, true);
           const queryParams = parsedUrl.query;
 
-          res.writeHead(302, { Location: CLIENT_URL + "/auth/success" });
-          res.end(JSON.stringify(queryParams));
+          res.writeHead(200);
+          // res.writeHead(302, { Location: CLIENT_URL + "/auth/success" });
+          res.end();
 
           resolve(queryParams);
         } else {
@@ -68,7 +69,7 @@ program
       )}\n`
     );
     spawn("open", [confirmationUrl.toString()]);
-    const spinner = ora("Waiting for authentication...").start();
+    const spinner = ora("Waiting for authentication...\n\n").start();
 
     try {
       const authData = await authPromise;

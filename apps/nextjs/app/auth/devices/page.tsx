@@ -6,6 +6,7 @@ import { useState } from "react";
 
 export default function Page() {
   const [data, setData] = useState();
+  const [success, setSuccess] = useState(false);
   const router = useRouter();
 
   async function verify(opts: {
@@ -29,7 +30,15 @@ export default function Page() {
 
     console.log(redirectUrl.toString());
 
-    router.push(redirectUrl.toString());
+    const localServerReq = await fetch(redirectUrl.toString(), {
+      mode: "no-cors",
+    });
+
+    const localServerRes = await localServerReq.text();
+
+    console.log(localServerRes);
+
+    setSuccess(true);
   }
 
   const searchParams = useSearchParams();
@@ -45,8 +54,11 @@ export default function Page() {
     <>
       <div>Code: {code}</div>
       <p>Does this match what you see in your terminal?</p>
-      <button onClick={() => verify(opts)}>Yes</button>
+      <button className="bg-gray-300" onClick={() => verify(opts)}>
+        Yes
+      </button>
       <pre>{JSON.stringify(data)}</pre>
+      <pre>{success ? "Authentication successful." : ""}</pre>
     </>
   );
 }

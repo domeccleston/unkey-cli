@@ -11,8 +11,6 @@ export async function POST(request: Request) {
   }
   const unkey = new Unkey({ rootKey: process.env.UNKEY_ROOT_KEY });
 
-  console.log(redirect);
-
   const { result, error } = await unkey.keys.create({
     apiId: process.env.UNKEY_API,
     prefix: "cli_demo",
