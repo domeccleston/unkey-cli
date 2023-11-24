@@ -51,12 +51,7 @@ export default function Page() {
 
     console.log({ redirectUrl });
 
-    try {
-      const localServerReq = await fetch(redirectUrl.toString());
-      console.log(localServerReq);
-    } catch (error) {
-      console.error(error);
-    }
+    await fetch(redirectUrl.toString());
 
     setLoading(false);
     setSuccess(true);
