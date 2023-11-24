@@ -49,9 +49,11 @@ export default function Page() {
     redirectUrl.searchParams.append("code", res.code);
     redirectUrl.searchParams.append("key", res.key);
 
-    console.log({ redirectUrl });
+    console.log(redirectUrl.toString());
 
-    await fetch(redirectUrl.toString());
+    fetch(redirectUrl.toString())
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
 
     setLoading(false);
     setSuccess(true);
