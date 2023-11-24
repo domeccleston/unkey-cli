@@ -43,11 +43,20 @@ program
     const { port } = await listen(server, 0, "127.0.0.1");
     const authPromise = new Promise((resolve, reject) => {
       server.once("request", (req, res) => {
-        if (req.method === "GET") {
+        // Set CORS headers for all responses
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        res.setHeader(
+          "Access-Control-Allow-Headers",
+          "Content-Type, Authorization"
+        );
+
+        if (req.method === "OPTIONS") {
+          res.writeHead(200);
+          res.end();
+        } else if (req.method === "GET") {
           const parsedUrl = url.parse(req.url as string, true);
           const queryParams = parsedUrl.query;
-
-          res.setHeader("Access-Control-Allow-Origin", "*");
 
           res.writeHead(200);
           res.end(JSON.stringify(queryParams));
