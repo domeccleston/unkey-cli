@@ -37,12 +37,18 @@ program
   .command("login")
   .description("Authenticate with your service via the CLI")
   .action(async () => {
+    // need to import ora dynamically since it's ESM-only
     const oraModule = await import("ora");
     const ora = oraModule.default;
+
+    // create localhost server for our page to call back to
     const server = http.createServer();
     const { port } = await listen(server, 0, "127.0.0.1");
+
+    // set up HTTP server that waits for a request containing an API key
+    // as the only query parameter
     const authPromise = new Promise((resolve, reject) => {
-      server.once("request", (req, res) => {
+      server.on("request", (req, res) => {
         // Set CORS headers for all responses
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
@@ -82,9 +88,10 @@ program
       )}\n`
     );
     spawn("open", [confirmationUrl.toString()]);
-    const spinner = ora("Waiting for authentication...\n\n").start();
+    const spinner = ora("Waiting for authentication...\n\n");
 
     try {
+      spinner.start();
       const authData = await authPromise;
       spinner.stop();
       writeToConfigFile(authData);
