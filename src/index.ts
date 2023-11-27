@@ -12,8 +12,8 @@ import { listen } from "async-listen";
 import pc from "picocolors";
 
 const FILENAME = ".unkey";
-// const CLIENT_URL = "http://localhost:3000";
-const CLIENT_URL = "https://unkey-cli.vercel.app";
+const CLIENT_URL = "http://localhost:3000";
+// const CLIENT_URL = "https://unkey-cli.vercel.app";
 
 async function writeToConfigFile(data: any) {
   try {

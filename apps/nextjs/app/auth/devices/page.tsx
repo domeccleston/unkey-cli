@@ -1,9 +1,9 @@
 "use client";
 
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, notFound } from "next/navigation";
 import { useState } from "react";
 
-import { Fingerprint, Loader } from "lucide-react";
+import { Fingerprint } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 
 import { Button } from "@/components/ui/button";
@@ -11,16 +11,14 @@ import { useUser } from "@clerk/nextjs";
 
 function CodeCharacter({ char }: { char: string }) {
   return (
-    <div className="p-4 font-mono text-xl lg:text-4xl rounded bg-gray-900">
+    <div className="p-2 lg:p-4 font-mono text-xl lg:text-4xl rounded bg-gray-900">
       {char}
     </div>
   );
 }
 
 export default function Page() {
-  const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
   const router = useRouter();
 
   async function verify(opts: {
@@ -28,7 +26,6 @@ export default function Page() {
     redirect: string | null;
   }) {
     setLoading(true);
-    console.log("verifying");
     const req = await fetch("/api/unkey", {
       method: "POST",
       body: JSON.stringify(opts),
@@ -43,20 +40,15 @@ export default function Page() {
 
     const res = await req.json();
 
-    console.log({ res });
-
     const redirectUrl = new URL(res.redirect);
     redirectUrl.searchParams.append("code", res.code);
     redirectUrl.searchParams.append("key", res.key);
-
-    console.log(redirectUrl.toString());
 
     fetch(redirectUrl.toString())
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
 
     setLoading(false);
-    setSuccess(true);
     toast.success(
       "Authentication successful. You can close this window and return to the CLI."
     );
@@ -68,6 +60,10 @@ export default function Page() {
   const _redirect = searchParams.get("redirect");
 
   const { user } = useUser();
+
+  if (!code || !_redirect) {
+    return notFound();
+  }
 
   const opts = { code, redirect: _redirect, id: user?.id };
 
