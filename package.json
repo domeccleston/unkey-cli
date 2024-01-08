@@ -1,6 +1,6 @@
 {
 	"name": "unkey-cli",
-	"version": "1.1.8",
+	"version": "1.1.9",
 	"description": "Template for building CLI applications with Unkey",
 	"main": "./dist/index.js",
 	"bin": {
