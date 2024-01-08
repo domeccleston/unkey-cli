@@ -11,6 +11,7 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"unkey-cli": "^1.1.4"
+		"unkey-cli": "latest"
 	}
 }
+ 
