@@ -10,10 +10,11 @@ import path from "path";
 import url from "url";
 import { listen } from "async-listen";
 import pc from "picocolors";
+import { ParsedUrlQuery } from "node:querystring";
 
 const FILENAME = ".unkey";
-const CLIENT_URL = "http://localhost:3000";
-// const CLIENT_URL = "https://unkey-cli.vercel.app";
+// const CLIENT_URL = "http://localhost:3000";
+const CLIENT_URL = "https://unkey-cli.vercel.app";
 
 class UserCancellationError extends Error {
 	constructor(message: string) {
@@ -22,7 +23,7 @@ class UserCancellationError extends Error {
 	}
 }
 
-async function writeToConfigFile(data: any) {
+async function writeToConfigFile(data: ParsedUrlQuery) {
 	try {
 		const homeDir = os.homedir();
 		const filePath = path.join(homeDir, FILENAME);
@@ -54,42 +55,46 @@ program
 
 		// set up HTTP server that waits for a request containing an API key
 		// as the only query parameter
-		const authPromise = new Promise((resolve, reject) => {
-			server.on("request", (req, res) => {
-				// Set CORS headers for all responses
-				res.setHeader("Access-Control-Allow-Origin", "*");
-				res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-				res.setHeader(
-					"Access-Control-Allow-Headers",
-					"Content-Type, Authorization",
-				);
+		const authPromise = new Promise<ParsedUrlQuery>(
+			(resolve, reject) => {
+				server.on("request", (req, res) => {
+					// Set CORS headers for all responses
+					res.setHeader("Access-Control-Allow-Origin", "*");
+					res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+					res.setHeader(
+						"Access-Control-Allow-Headers",
+						"Content-Type, Authorization",
+					);
 
-				if (req.method === "OPTIONS") {
-					res.writeHead(200);
-					res.end();
-				} else if (req.method === "GET") {
-					const parsedUrl = url.parse(req.url as string, true);
-					const queryParams = parsedUrl.query;
+					if (req.method === "OPTIONS") {
+						res.writeHead(200);
+						res.end();
+					} else if (req.method === "GET") {
+						const parsedUrl = url.parse(req.url as string, true);
+						const queryParams = parsedUrl.query;
 
-					res.writeHead(200);
-					res.end(JSON.stringify(queryParams));
+						res.writeHead(200);
+						res.end(JSON.stringify(queryParams));
 
-					resolve(queryParams);
-				} else if (req.method === "POST") {
-					res.writeHead(200);
-					res.end();
-					reject(new UserCancellationError("Login process cancelled by user."));
-				} else {
-					res.writeHead(405);
-					res.end();
-				}
-			});
-		});
+						resolve(queryParams);
+					} else if (req.method === "POST") {
+						res.writeHead(200);
+						res.end();
+						reject(
+							new UserCancellationError("Login process cancelled by user."),
+						);
+					} else {
+						res.writeHead(405);
+						res.end();
+					}
+				});
+			},
+		);
 
 		const redirect = `http://127.0.0.1:${port}`;
 
 		const code = nanoid();
-		const confirmationUrl = new URL(CLIENT_URL + "/auth/devices");
+		const confirmationUrl = new URL(`${CLIENT_URL}/auth/devices`);
 		confirmationUrl.searchParams.append("code", code);
 		confirmationUrl.searchParams.append("redirect", redirect);
 		console.log(`Confirmation code: ${pc.bold(code)}\n`);
