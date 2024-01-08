@@ -78,7 +78,7 @@ program
 				} else if (req.method === "POST") {
 					res.writeHead(200);
 					res.end();
-					throw new UserCancellationError("Login process cancelled by user.");
+					reject(new UserCancellationError("Login process cancelled by user."));
 				} else {
 					res.writeHead(405);
 					res.end();
@@ -110,6 +110,7 @@ program
 		} catch (error) {
 			if (error instanceof UserCancellationError) {
 				console.log("Authentication cancelled.");
+				process.exit(0);
 			} else {
 				console.error("Authentication failed:", error);
 			}
