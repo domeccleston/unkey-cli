@@ -13,8 +13,8 @@ import pc from "picocolors";
 import { ParsedUrlQuery } from "node:querystring";
 
 const FILENAME = ".unkey";
-// const CLIENT_URL = "http://localhost:3000";
-const CLIENT_URL = "https://unkey-cli.vercel.app";
+const CLIENT_URL = "http://localhost:3000";
+// const CLIENT_URL = "https://unkey-cli.vercel.app";
 
 class UserCancellationError extends Error {
 	constructor(message: string) {
@@ -44,7 +44,12 @@ program
 program
 	.command("login")
 	.description("Authenticate with your service via the CLI")
-	.action(async () => {
+	.action(async (...args) => {
+		if (args.length !== 1) {
+			console.error("Usage: `unkey-cli login`.");
+			process.exit(1);
+		}
+		
 		// need to import ora dynamically since it's ESM-only
 		const oraModule = await import("ora");
 		const ora = oraModule.default;
@@ -55,41 +60,39 @@ program
 
 		// set up HTTP server that waits for a request containing an API key
 		// as the only query parameter
-		const authPromise = new Promise<ParsedUrlQuery>(
-			(resolve, reject) => {
-				server.on("request", (req, res) => {
-					// Set CORS headers for all responses
-					res.setHeader("Access-Control-Allow-Origin", "*");
-					res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-					res.setHeader(
-						"Access-Control-Allow-Headers",
-						"Content-Type, Authorization",
-					);
+		const authPromise = new Promise<ParsedUrlQuery>((resolve, reject) => {
+			server.on("request", (req, res) => {
+				// Set CORS headers for all responses
+				res.setHeader("Access-Control-Allow-Origin", "*");
+				res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+				res.setHeader(
+					"Access-Control-Allow-Headers",
+					"Content-Type, Authorization",
+				);
 
-					if (req.method === "OPTIONS") {
-						res.writeHead(200);
-						res.end();
-					} else if (req.method === "GET") {
-						const parsedUrl = url.parse(req.url as string, true);
-						const queryParams = parsedUrl.query;
-
-						res.writeHead(200);
-						res.end(JSON.stringify(queryParams));
-
-						resolve(queryParams);
-					} else if (req.method === "POST") {
+				if (req.method === "OPTIONS") {
+					res.writeHead(200);
+					res.end();
+				} else if (req.method === "GET") {
+					const parsedUrl = url.parse(req.url as string, true);
+					const queryParams = parsedUrl.query;
+					if (queryParams.cancelled) {
 						res.writeHead(200);
 						res.end();
 						reject(
 							new UserCancellationError("Login process cancelled by user."),
 						);
 					} else {
-						res.writeHead(405);
-						res.end();
+						res.writeHead(200);
+						res.end(JSON.stringify(queryParams));
+						resolve(queryParams);
 					}
-				});
-			},
-		);
+				} else {
+					res.writeHead(405);
+					res.end();
+				}
+			});
+		});
 
 		const redirect = `http://127.0.0.1:${port}`;
 
@@ -114,7 +117,7 @@ program
 			console.log("Authentication successful.");
 		} catch (error) {
 			if (error instanceof UserCancellationError) {
-				console.log("Authentication cancelled.");
+				console.log("Authentication cancelled.\n");
 				process.exit(0);
 			} else {
 				console.error("Authentication failed:", error);
