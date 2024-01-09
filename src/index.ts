@@ -114,13 +114,15 @@ program
 			const authData = await authPromise;
 			spinner.stop();
 			writeToConfigFile(authData);
-			console.log("Authentication successful.");
+			console.log("Authentication successful.\n");
 		} catch (error) {
 			if (error instanceof UserCancellationError) {
 				console.log("Authentication cancelled.\n");
 				process.exit(0);
 			} else {
 				console.error("Authentication failed:", error);
+				console.log("\n");
+				process.exit(1);
 			}
 		} finally {
 			server.close();
