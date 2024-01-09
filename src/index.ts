@@ -13,8 +13,8 @@ import pc from "picocolors";
 import { ParsedUrlQuery } from "node:querystring";
 
 const FILENAME = ".unkey";
-const CLIENT_URL = "http://localhost:3000";
-// const CLIENT_URL = "https://unkey-cli.vercel.app";
+// const CLIENT_URL = "http://localhost:3000";
+const CLIENT_URL = "https://unkey-cli.vercel.app";
 
 class UserCancellationError extends Error {
 	constructor(message: string) {
@@ -45,11 +45,11 @@ program
 	.command("login")
 	.description("Authenticate with your service via the CLI")
 	.action(async (...args) => {
-		if (args.length !== 1) {
+		if (args.length !== 2) {
 			console.error("Usage: `unkey-cli login`.");
 			process.exit(1);
 		}
-		
+
 		// need to import ora dynamically since it's ESM-only
 		const oraModule = await import("ora");
 		const ora = oraModule.default;

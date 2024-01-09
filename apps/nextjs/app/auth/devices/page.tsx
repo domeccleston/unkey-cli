@@ -69,10 +69,6 @@ export default function Page() {
 	const code = searchParams.get("code");
 	const _redirect = searchParams.get("redirect");
 
-	if (!_redirect || !code) {
-		return notFound();
-	}
-
 	async function verify(opts: {
 		code: string | null;
 		redirect: string | null;
