@@ -12,6 +12,18 @@ This template involves a deployed Next.js web app in `examples/nextjs` and a com
 
 # About
 
+## How this works
+
+1. CLI spins up server on localhost
+2. CLI opens a page in the user's browser (/auth/devices) which is protected by an auth solution (Clerk, in this case)
+3. The user verifies that the code there matches the one shown in their terminal
+4. Upon verification, the Next.js app mints a new Unkey API key and sends it back to the local server
+5. The script writes the API key to a file and kills the server
+
+See the diagram below:
+
+[diagram]
+
 ## Login
 
 `unkey-cli login` does the following:
